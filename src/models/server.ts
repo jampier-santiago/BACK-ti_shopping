@@ -46,7 +46,7 @@ class Server {
 
   listen() {
     this.app.listen(this.port, () => {
-      console.log(`API ready 🥳, PORT = ${this.port}`);
+      console.log(`API ready 🤩, PORT = ${this.port}`);
     });
   }
 }
