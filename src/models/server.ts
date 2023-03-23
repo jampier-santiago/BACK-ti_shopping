@@ -7,7 +7,7 @@ import routesStore from "../routes/store";
 import routesAuth from "../routes/auth";
 
 class Server {
-  app;
+  app = express();
   port;
 
   routeStore: string;
@@ -15,8 +15,7 @@ class Server {
   routeAuth: string;
 
   constructor() {
-    this.app = express();
-    this.port = process.env.PORT;
+    this.port = process.env.PORT || 3000;
 
     this.routeStore = "/api/stores";
     this.routeProducts = "api/products";
@@ -35,6 +34,9 @@ class Server {
 
     // Parse responses
     this.app.use(express.json());
+
+    // Directorio publico
+    this.app.use(express.static("src/public"));
   }
 
   routes() {
@@ -44,7 +46,7 @@ class Server {
 
   listen() {
     this.app.listen(this.port, () => {
-      console.log("API ready 🥳");
+      console.log(`API ready 🥳, PORT = ${this.port}`);
     });
   }
 }
