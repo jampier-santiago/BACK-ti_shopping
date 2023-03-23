@@ -1,6 +1,5 @@
 // Packages
 import { Router } from "express";
-import { check } from "express-validator";
 
 // Controller
 import { getStores, getStoreById } from "../controllers/store";

@@ -4,6 +4,7 @@ import cors from "cors";
 
 // Routes
 import routesStore from "../routes/store";
+import routesAuth from "../routes/auth";
 
 class Server {
   app;
@@ -11,6 +12,7 @@ class Server {
 
   routeStore: string;
   routeProducts: string;
+  routeAuth: string;
 
   constructor() {
     this.app = express();
@@ -18,6 +20,7 @@ class Server {
 
     this.routeStore = "/api/stores";
     this.routeProducts = "api/products";
+    this.routeAuth = "/api/auth";
 
     // Middlejares
     this.middlewares();
@@ -36,6 +39,7 @@ class Server {
 
   routes() {
     this.app.use(this.routeStore, routesStore);
+    this.app.use(this.routeAuth, routesAuth);
   }
 
   listen() {

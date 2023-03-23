@@ -5,6 +5,7 @@ interface Person {
   email: string;
   address: string;
   birthDate: Date;
+  password: string;
 }
 
 export interface Product {
@@ -44,4 +45,10 @@ export interface Sales {
   total: number;
   nameStore: string;
   products: Array<Product>;
+}
+
+export interface StoreModel {
+  id: string;
+  name: string;
+  logo: string;
 }
