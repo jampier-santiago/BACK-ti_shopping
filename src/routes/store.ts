@@ -3,7 +3,14 @@ import { Router } from "express";
 import { check } from "express-validator";
 
 // Controller
-import { getStores, getStoreById, postStore } from "../controllers/store";
+import {
+  getStores,
+  getStoreById,
+  postStore,
+  putStore,
+} from "../controllers/store";
+
+// Middlewares
 import { validarCampos, validarJWT } from "../middlewares";
 
 const router = Router();
@@ -28,5 +35,7 @@ router.post(
   ],
   postStore
 );
+
+router.put("/:id", [validarJWT, validarCampos], putStore);
 
 export default router;
