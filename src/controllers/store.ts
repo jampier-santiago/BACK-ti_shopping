@@ -23,3 +23,40 @@ export const getStoreById = (req = request, res = response) => {
 
   res.json({ element });
 };
+
+export const postStore = (req = request, res = response) => {
+  const {
+    name,
+    address,
+    webPage,
+    facebook,
+    instagram,
+    phoneNumber,
+    email,
+    description,
+    logo,
+    mainColor,
+    keyWords,
+    accountBank,
+  } = req.body;
+
+  const id = 1;
+  const state = true;
+
+  res.json({
+    id,
+    name,
+    address,
+    webPage,
+    facebook,
+    instagram,
+    phoneNumber,
+    email,
+    description,
+    logo,
+    mainColor,
+    keyWords,
+    accountBank,
+    state,
+  });
+};
