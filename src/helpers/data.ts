@@ -1,4 +1,4 @@
-import { StoreModel, Client, Seller, Store } from "../data/models";
+import { StoreModel, Client, Seller, Store, Product } from "../data/models";
 
 export const stores: Array<StoreModel> = [
   {
@@ -69,5 +69,24 @@ export const sellers: Array<Seller> = [
     phoneNumber: "232323322332",
     password: "$2a$10$wPVgIwfUmZNOqvnAOOu3aunV8xWxaWfM408gdLN6MguKidGniFhpu",
     dateOfMakeAccount: new Date(),
+  },
+];
+
+export const products: Array<Product> = [
+  {
+    brand: "Apple",
+    category: "Celulares",
+    description: "LADASIDNAS sandasij dasj as das dasj das ",
+    id: "1",
+    name: "Iphone",
+    price: "2000",
+  },
+  {
+    brand: "Apple",
+    category: "Computadores",
+    description: "LADASIDNAS sandasij dasj as das dasj das ",
+    id: "2",
+    name: "Mac",
+    price: "20000",
   },
 ];
