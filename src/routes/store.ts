@@ -8,6 +8,7 @@ import {
   getStoreById,
   postStore,
   putStore,
+  deleteStore,
 } from "../controllers/store";
 
 // Middlewares
@@ -37,5 +38,7 @@ router.post(
 );
 
 router.put("/:id", [validarJWT, validarCampos], putStore);
+
+router.delete("/delete/:id", [validarJWT, validarCampos], deleteStore);
 
 export default router;

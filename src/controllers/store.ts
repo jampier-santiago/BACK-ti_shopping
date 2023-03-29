@@ -1,5 +1,5 @@
 // Packages
-const { request, response } = require("express");
+import { request, response } from "express";
 
 // Data
 import { stores, storesComplete } from "../helpers/data";
@@ -105,4 +105,21 @@ export const putStore = (req = request, res = response) => {
     keyWords,
     accountBank,
   });
+};
+
+/**
+ * Function for hide a store
+ */
+export const deleteStore = (req = request, res = response) => {
+  const { id } = req.params;
+
+  const element = storesComplete.filter((store) => store.id === id)[0];
+
+  if (!element) {
+    return res
+      .status(404)
+      .json({ msg: "No se encontro una tienda relacionada con ese id" });
+  }
+
+  res.json(element);
 };
