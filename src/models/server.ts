@@ -6,6 +6,7 @@ import cors from "cors";
 import routesStore from "../routes/store";
 import routesAuth from "../routes/auth";
 import routesProducts from "../routes/products";
+import routesCategories from "../routes/categories";
 
 class Server {
   app = express();
@@ -14,6 +15,7 @@ class Server {
   routeStore: string = "/api/stores";
   routeProducts: string = "/api/products";
   routeAuth: string = "/api/auth";
+  routeCategories: string = "/api/categories";
 
   constructor() {
     this.port = process.env.PORT || 3000;
@@ -40,6 +42,7 @@ class Server {
     this.app.use(this.routeStore, routesStore);
     this.app.use(this.routeAuth, routesAuth);
     this.app.use(this.routeProducts, routesProducts);
+    this.app.use(this.routeCategories, routesCategories);
   }
 
   listen() {

@@ -52,3 +52,8 @@ export interface StoreModel {
   name: string;
   logo: string;
 }
+
+export interface Category {
+  id?: string;
+  name: string;
+}
