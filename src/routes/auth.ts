@@ -3,14 +3,14 @@ import { Router } from "express";
 import { check } from "express-validator";
 
 // Controllers
-import { login, newUser } from "../controllers/auth";
+import { login, newUser, deleteUser, updateUser } from "../controllers/auth";
 
 // Middlejares
-import { validarCampos } from "../middlewares/validarCampos";
+import { validarJWT, validarCampos } from "../middlewares";
 
 const router = Router();
 
-router.get(
+router.post(
   "/login",
   [
     check("email", "El email es obligatorio").notEmpty(),
@@ -47,5 +47,9 @@ router.post(
   ],
   newUser
 );
+
+router.delete("/delete/:id", [validarJWT, validarCampos], deleteUser);
+
+router.put("/update/:id", [validarJWT, validarCampos], updateUser);
 
 export default router;

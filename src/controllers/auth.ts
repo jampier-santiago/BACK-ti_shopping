@@ -9,8 +9,11 @@ import { Client, Seller } from "../data/models";
 // Helpers
 import generateJWT from "../helpers/jwt";
 
+/**
+ * Function for do login
+ */
 export const login = async (req = request, res = response) => {
-  const { password, email } = req.query;
+  const { password, email } = req.body;
 
   let user: Client | Seller | any;
   let isUser: boolean = false;
@@ -55,6 +58,9 @@ export const login = async (req = request, res = response) => {
   res.json({ resto, role: isUser ? "CLIENT" : "SELLER", token });
 };
 
+/**
+ * Funciton for make a new user
+ */
 export const newUser = async (req = request, res = response) => {
   const {
     firstName,
@@ -82,4 +88,22 @@ export const newUser = async (req = request, res = response) => {
     role,
     token,
   });
+};
+
+/**
+ * Function for hide a user
+ */
+export const deleteUser = (req = request, res = response) => {
+  const { id } = req.params;
+
+  res.json({ id });
+};
+
+/**
+ * Update user
+ */
+export const updateUser = (req = request, res = response) => {
+  const { id } = req.params;
+
+  res.json({ id });
 };
