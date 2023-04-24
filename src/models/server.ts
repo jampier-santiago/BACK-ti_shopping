@@ -8,6 +8,9 @@ import routesAuth from "../routes/auth";
 import routesProducts from "../routes/products";
 import routesCategories from "../routes/categories";
 
+// DB
+import { makePool } from "../db/config";
+
 class Server {
   app = express();
   port;
@@ -19,6 +22,9 @@ class Server {
 
   constructor() {
     this.port = process.env.PORT || 3000;
+
+    // db
+    this.connectDB();
 
     // Middlewares
     this.middlewares();
@@ -49,6 +55,12 @@ class Server {
     this.app.listen(this.port, () => {
       console.log(`API ready 🥳, PORT = ${this.port}`);
     });
+  }
+
+  connectDB() {
+    makePool()
+      .then(() => console.log("Success"))
+      .catch((error) => console.log(error));
   }
 }
 

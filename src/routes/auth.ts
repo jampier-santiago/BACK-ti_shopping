@@ -32,7 +32,6 @@ router.post(
       .notEmpty()
       .isLength({ min: 5, max: 10 }),
     check("email", "El correo no es valido").notEmpty().isEmail(),
-    check("address", "La direcció no es valida").notEmpty(),
     check("birthDate", "la fecha de nacimineto no es valida").notEmpty(),
     check("password", "No es un password valido")
       .notEmpty()

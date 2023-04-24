@@ -1,6 +1,7 @@
 // Packages
 import { request, response } from "express";
 import bcryptjs from "bcryptjs";
+import { connection } from "../db/config";
 
 // Data
 import { clients, sellers } from "../helpers/data";
@@ -18,11 +19,19 @@ export const login = async (req = request, res = response) => {
   let user: Client | Seller | any;
   let isUser: boolean = false;
 
+  await connection.query(
+    "select * from bd.people",
+    (error, results, fields) => {
+      if (error) throw error;
+
+      console.log("🤣", results);
+    }
+  );
+
   const findClient = clients.filter((client) => client.email === email)[0];
 
   if (!findClient) {
     const findSeller = sellers.filter((seller) => seller.email === email)[0];
-
     if (!findSeller) {
       return res
         .status(404)
@@ -55,7 +64,7 @@ export const login = async (req = request, res = response) => {
 
   const { password: p, birthDate, ...resto } = user;
 
-  res.json({ resto, role: isUser ? "CLIENT" : "SELLER", token });
+  res.json({ ...resto, role: isUser ? "CLIENT" : "SELLER", token });
 };
 
 /**
@@ -69,7 +78,6 @@ export const newUser = async (req = request, res = response) => {
     secondSurname,
     phoneNumber,
     email,
-    address,
     birthDate,
     password,
     role,
