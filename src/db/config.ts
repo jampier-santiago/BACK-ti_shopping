@@ -1,16 +1,23 @@
 import mysql from "mysql";
-export let connection: mysql.Pool;
+export let connection: mysql.Connection;
 
 export const makePool = async () => {
-  connection = mysql.createPool({
-    host: "34.68.24.69",
-    database: "bd",
-    user: "root",
-    password: "back_proj3ct03-19@HJLJ",
-    port: 3030,
+  connection = mysql.createConnection({
+    host: process.env.HOST_BD,
+    user: process.env.USER_BD,
+    password: process.env.PASSWORD_BD,
+    database: process.env.DATABASE_BD,
+    port: parseInt(process.env.PORT_BD as string),
+    // ssl: { ca: fs.readFileSync("{ca-cert filename}") },
   });
 };
 
-export const makeQuery = (query: string) => {
-  return connection.query(query);
+export const makeQuery = (query: string): Promise<any> => {
+  return new Promise((resolve: any, reject) => {
+    connection.query(query, (error: any, results) => {
+      if (error) return reject(error);
+
+      resolve(results);
+    });
+  });
 };
