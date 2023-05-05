@@ -2,10 +2,7 @@
 import { request, response } from "express";
 import bcryptjs from "bcryptjs";
 
-import { connection, makeQuery } from "../db/config";
-
-// Data
-import { clients, sellers } from "../helpers/data";
+import { makeQuery } from "../db/config";
 
 import { SellerResponseEntity } from "../data/seller.entity";
 import { CustomerResponseEntity } from "data/customer.entity";
@@ -38,11 +35,19 @@ const searchSeller = (
         s_name,
         f_lastname,
         s_lastname,
+        Id_people,
+        Id_sellers,
         ...resto
       } = findClient;
 
       const userName = `${f_name} ${s_name} ${f_lastname} ${s_lastname}`;
-      return res.json({ ...resto, token, userName, role: "SELLER" });
+      return res.json({
+        ...resto,
+        token,
+        userName,
+        id: Id_sellers,
+        role: "SELLER",
+      });
     });
   } else {
     makeQuery(
@@ -83,12 +88,19 @@ const searchCustomer = (
         s_name,
         f_lastname,
         s_lastname,
+        Id_CUSTOMERS,
         ...resto
       } = findClient;
 
       const userName = `${f_name} ${s_name} ${f_lastname} ${s_lastname}`;
 
-      return res.json({ ...resto, token, userName, role: "CLIENT" });
+      return res.json({
+        ...resto,
+        token,
+        userName,
+        id: Id_people,
+        role: "CLIENT",
+      });
     });
   } else {
     return res.status(404).json("No se encontro nigun usuario con estos datos");
@@ -128,19 +140,31 @@ export const newUser = async (req = request, res = response) => {
     role,
   } = req.body;
 
-  const id = "2";
-
-  const token = await generateJWT(id);
+  const query = {
+    customer: "INSERT INTO customers SET ?",
+    seller: "INSERT INTO sellers SET ?",
+  };
 
   const salt = bcryptjs.genSaltSync();
   const passwordModificated = bcryptjs.hashSync(password, salt as any);
 
-  res.json({
-    id,
-    fullName: `${firstName} ${secondName} ${surname} ${secondSurname}`,
-    role,
-    token,
-  });
+  if (role === "SELLER_ROLE") {
+    makeQuery(query.customer, {
+      state: 1,
+      email: email,
+      Password: passwordModificated,
+      birthdate: birthDate,
+      f_name: firstName.toLowerCase(),
+      s_name: secondName.toLowerCase(),
+      f_lastname: surname.toLowerCase(),
+      s_lastname: secondSurname.toLowerCase(),
+      num_telephone: phoneNumber,
+    }).then((results) => {
+      return response.json(results);
+    });
+  }
+
+  // const token = await generateJWT(id);
 };
 
 /**

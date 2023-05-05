@@ -12,9 +12,9 @@ export const makePool = async () => {
   });
 };
 
-export const makeQuery = (query: string): Promise<any> => {
+export const makeQuery = (query: string, data?: any): Promise<any> => {
   return new Promise((resolve: any, reject) => {
-    connection.query(query, (error: any, results) => {
+    connection.query(query, data, (error: any, results) => {
       if (error) return reject(error);
 
       resolve(results);
