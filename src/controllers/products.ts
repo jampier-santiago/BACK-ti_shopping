@@ -29,13 +29,22 @@ export const getProducts = (req = request, res = response) => {
 export const getProductById = (req = request, res = response) => {
   const { id } = req.params;
 
-  const product = products.filter((element) => element.id === id)[0];
+  makeQuery(`select * from products where state = '1' and Id_product = ${id}`)
+    .then((results: Array<ProductResponseEntity>) => {
+      if (products.length > 0) {
+        const data = results.map((result) => {
+          const { state, ...rest } = result;
+          return rest;
+        });
 
-  if (!product) {
-    return res.status(404).json({ msg: "No hay un producto con ese id" });
-  }
-
-  res.json(product);
+        res.json(data);
+      } else {
+        return res
+          .status(404)
+          .json("No se encontro ningun producto con este id");
+      }
+    })
+    .catch((error) => res.status(500).json(error));
 };
 
 /**
