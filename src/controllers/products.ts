@@ -1,6 +1,27 @@
 // packages
 import { response, request } from "express";
+
+// Helpers
+import { makeQuery } from "../db/config";
+
 import { products } from "../helpers/data";
+import { ProductResponseEntity } from "data/products.entity";
+
+/**
+ * Function for find a product by id
+ */
+export const getProducts = (req = request, res = response) => {
+  makeQuery("select * from products where state = '1'")
+    .then((results: Array<ProductResponseEntity>) => {
+      const data = results.map((result) => {
+        const { state, ...rest } = result;
+        return rest;
+      });
+
+      res.json(data);
+    })
+    .catch((error) => res.status(500).json(error));
+};
 
 /**
  * Function for find a product by id

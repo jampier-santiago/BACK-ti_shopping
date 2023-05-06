@@ -5,7 +5,6 @@ import { request, response } from "express";
 import { makeQuery } from "../db/config";
 
 // Data
-import { storesComplete } from "../helpers/data";
 import { StoreResponseEntity } from "../data/stores.entity";
 
 /**
@@ -17,7 +16,7 @@ export const getStores = (req = request, res = response) => {
   makeQuery("select * from stores where state = '1'")
     .then((results: Array<StoreResponseEntity>) => {
       const data = results.map((result) => {
-        const { state, Id_sellers, ...rest } = result;
+        const { state, ...rest } = result;
         return rest;
       });
 
@@ -46,7 +45,7 @@ export const getStoreById = (req = request, res = response) => {
 /**
  * Function for make a new store
  */
-export const postStore = (req = request, res = response) => {
+export const postStore = (req: any, res = response) => {
   const {
     name,
     address,
@@ -62,25 +61,28 @@ export const postStore = (req = request, res = response) => {
     accountBank,
   } = req.body;
 
-  const id = 1;
-  const state = true;
+  const data = {
+    name_store: name,
+    Id_sellers: req.userId,
+    Address: address,
+    Page_web: webPage,
+    Facebook: facebook,
+    Instagram: instagram,
+    Num_telephone: phoneNumber,
+    Email: email,
+    business_description: description,
+    Logo: logo,
+    main_color: mainColor,
+    keyword: keyWords,
+    active_bank_account_number: accountBank,
+    state: "1",
+  };
 
-  res.json({
-    id,
-    name,
-    address,
-    webPage,
-    facebook,
-    instagram,
-    phoneNumber,
-    email,
-    description,
-    logo,
-    mainColor,
-    keyWords,
-    accountBank,
-    state,
-  });
+  const query = `INSERT INTO stores SET ?`;
+
+  makeQuery(query, data)
+    .then(() => res.json("El registro fue creado con exito"))
+    .catch((error) => res.status(500).json(error));
 };
 
 /**
@@ -126,13 +128,15 @@ export const putStore = (req = request, res = response) => {
 export const deleteStore = (req = request, res = response) => {
   const { id } = req.params;
 
-  const element = storesComplete.filter((store) => store.id === id)[0];
-
-  if (!element) {
-    return res
-      .status(404)
-      .json({ msg: "No se encontro una tienda relacionada con ese id" });
-  }
-
-  res.json(element);
+  makeQuery(`select * from stores where state = '1' AND Id_stores = ${id}`)
+    .then((result: Array<StoreResponseEntity>) => {
+      if (result.length > 0) {
+        makeQuery(`UPDATE stores SET state = '0' WHERE Id_stores = ${id}`)
+          .then(() => res.json("Tienda eliminada con exito"))
+          .catch((error) => res.status(500).json(error));
+      } else {
+        return res.status(404).json("No se encontraron datos con ese id");
+      }
+    })
+    .catch((error) => res.status(500).json(error));
 };
