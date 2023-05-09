@@ -1,6 +1,4 @@
 export interface Person {
-  Id_sellers: number;
-  creation_date: string;
   Id_people: number;
   f_name: string;
   s_name: string;
@@ -11,4 +9,10 @@ export interface Person {
   address: string;
   birthdate: string;
   state: number;
+  creation_date: string | Date;
+  password: string;
+  N_credit_card?: string;
+  CVC?: string;
+  credit_card_expiration_date?: string | Date;
+  rol: "ADMIN" | "CLIENT";
 }

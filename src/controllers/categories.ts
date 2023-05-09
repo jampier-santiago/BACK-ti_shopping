@@ -1,6 +1,12 @@
 // Packages
 import { response, request } from "express";
 
+// Helpers
+import { makeQuery } from "../db/config";
+
+// Intefaces
+import { CategoryResponseEntity } from "../data/categories.entity";
+
 // data
 import { categories } from "../helpers/data";
 
@@ -8,7 +14,11 @@ import { categories } from "../helpers/data";
  * Function for get all categories
  */
 export const getCategories = (req = request, res = response) => {
-  res.json(categories);
+  makeQuery("SELECT * from categories")
+    .then((result: Array<CategoryResponseEntity>) => {
+      res.json(result);
+    })
+    .catch((error) => res.status(500).json(error));
 };
 
 /**
@@ -17,24 +27,30 @@ export const getCategories = (req = request, res = response) => {
 export const getCategoryById = (req = request, res = response) => {
   const { id } = req.params;
 
-  const category = categories.filter((element) => element.id === id)[0];
+  makeQuery(`SELECT * from categories WHERE Id_categories = ${id}`)
+    .then((result: Array<CategoryResponseEntity>) => {
+      if (!result || result.length === 0) {
+        return res.status(404).json({
+          msg: "No se encontro una categoria relacionada con ese id",
+        });
+      }
 
-  if (!category) {
-    return res
-      .status(404)
-      .json({ msg: "No se encontro una categoria relacionada con ese id" });
-  }
-
-  res.json(category);
+      return res.json(result);
+    })
+    .catch((error) => res.status(500).json(error));
 };
 
 /**
  * Function for make a new category
  */
 export const makeNewCategory = (req = request, res = response) => {
-  const { name } = req.body;
+  const { name: name_categoria } = req.body;
 
-  res.json({ name, id: "1238" });
+  makeQuery("INSERT INTO categories SET ?", { name_categoria })
+    .then((result: Array<CategoryResponseEntity>) => {
+      res.json("Categoria creada con exito");
+    })
+    .catch((error) => res.status(500).json(error));
 };
 
 /**
@@ -44,15 +60,21 @@ export const updateCategory = (req = request, res = response) => {
   const { id } = req.params;
   const { name } = req.body;
 
-  const category = categories.filter((element) => element.id === id)[0];
+  makeQuery(`SELECT * from categories WHERE Id_categories = ${id}`)
+    .then((result: Array<CategoryResponseEntity>) => {
+      if (!result || result.length === 0) {
+        return res.status(404).json({
+          msg: "No se encontro una categoria relacionada con ese id",
+        });
+      }
 
-  if (!category) {
-    return res
-      .status(404)
-      .json({ msg: "No se encontro ninguna categoria que coincida con el id" });
-  }
-
-  res.json({ name });
+      makeQuery(
+        `UPDATE categories SET name_categoria = '${name}' WHERE Id_categories = '${id}'; `
+      )
+        .then(() => res.json("Categoria actualizada con exito"))
+        .catch((error) => res.status(500).json(error));
+    })
+    .catch((error) => res.status(500).json(error));
 };
 
 /**
