@@ -52,15 +52,40 @@ export const getProductById = (req = request, res = response) => {
  */
 export const updateProduct = (req = request, res = response) => {
   const { id } = req.params;
-  const { name } = req.body;
+  const { name, description, price, image } = req.body;
 
-  const product = products.filter((element) => element.id === id)[0];
+  let query = "";
 
-  if (!product) {
-    return res.status(404).json({ msg: "No hay un producto con ese id" });
-  }
+  const data: any = {
+    Name_product: name,
+    Description_product: description,
+    Price: price,
+    image: image,
+  };
 
-  res.json(product);
+  Object.keys(data).forEach((brand) => {
+    if (data[brand]) {
+      query += `${brand} = '${data[brand]}', `;
+    }
+  });
+
+  query = query.slice(0, -2) + query.slice(-1);
+
+  makeQuery(`SELECT * FROM products WHERE Id_product = '${id}'`)
+    .then((results: Array<ProductResponseEntity>) => {
+      if (results.length > 0) {
+        makeQuery(
+          `UPDATE products SET ${query.trim()} WHERE Id_product = '${id}';`
+        )
+          .then(() => res.json("Elemento actualizado con exito"))
+          .catch((error) => res.status(500).json(error));
+      } else {
+        return res.json(404).json("No existe un usuario con estos datos");
+      }
+    })
+    .catch((error) => {
+      return res.status(500).json(error);
+    });
 };
 
 /**
