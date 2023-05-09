@@ -113,11 +113,17 @@ export const makeProduct = (req = request, res = response) => {
 export const deleteProduct = (req = request, res = response) => {
   const { id } = req.params;
 
-  const product = products.filter((element) => element.id === id)[0];
-
-  if (!product) {
-    return res.status(404).json({ msg: "No hay un producto con ese id" });
-  }
-
-  res.json(product);
+  makeQuery(`SELECT * FROM products WHERE Id_product = '${id}'`)
+    .then((results: Array<ProductResponseEntity>) => {
+      if (results.length > 0) {
+        makeQuery(`UPDATE products SET state = '0' WHERE Id_product = '${id}';`)
+          .then(() => res.json("Elemento eliminado con exito"))
+          .catch((error) => res.status(500).json(error));
+      } else {
+        return res.json(404).json("No existe un usuario con estos datos");
+      }
+    })
+    .catch((error) => {
+      return res.status(500).json(error);
+    });
 };
