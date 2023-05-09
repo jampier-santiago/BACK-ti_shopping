@@ -47,7 +47,7 @@ export const makeNewCategory = (req = request, res = response) => {
   const { name: name_categoria } = req.body;
 
   makeQuery("INSERT INTO categories SET ?", { name_categoria })
-    .then((result: Array<CategoryResponseEntity>) => {
+    .then(() => {
       res.json("Categoria creada con exito");
     })
     .catch((error) => res.status(500).json(error));

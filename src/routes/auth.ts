@@ -3,12 +3,21 @@ import { Router } from "express";
 import { check } from "express-validator";
 
 // Controllers
-import { login, newUser, deleteUser, updateUser } from "../controllers/auth";
+import {
+  login,
+  newUser,
+  deleteUser,
+  updateUser,
+  getAllUsers,
+  activeUser,
+} from "../controllers/auth";
 
 // Middlejares
 import { validarJWT, validarCampos } from "../middlewares";
 
 const router = Router();
+
+router.get("/users", [validarJWT, validarCampos], getAllUsers);
 
 router.post(
   "/login",
@@ -36,12 +45,7 @@ router.post(
     check("password", "No es un password valido")
       .notEmpty()
       .isLength({ min: 2, max: 8 }),
-    check(
-      "role",
-      "El role no es valido, y debe ser de tipo 'ADMIN_ROLE', 'CLIENT_ROLE', 'SELLER_ROLE'"
-    )
-      .notEmpty()
-      .isIn(["ADMIN_ROLE", "CLIENT_ROLE", "SELLER_ROLE"]),
+    check("address", "La direccion es obligatoria").notEmpty(),
     validarCampos,
   ],
   newUser
@@ -50,5 +54,7 @@ router.post(
 router.delete("/delete/:id", [validarJWT, validarCampos], deleteUser);
 
 router.put("/update/:id", [validarJWT, validarCampos], updateUser);
+
+router.put("/active/:id", [validarJWT, validarCampos], activeUser);
 
 export default router;
