@@ -83,13 +83,19 @@ export const updateCategory = (req = request, res = response) => {
 export const deleteCategory = (req = request, res = response) => {
   const { id } = req.params;
 
-  const category = categories.filter((element) => element.id === id)[0];
-
-  if (!category) {
-    return res
-      .status(404)
-      .json({ msg: "No se encontro ninguna categoria que coincida con el id" });
-  }
-
-  res.json(category);
+  makeQuery(`SELECT * from categories WHERE Id_categories = ${id}`)
+    .then((result: Array<CategoryResponseEntity>) => {
+      if (!result || result.length === 0) {
+        return res.status(404).json({
+          msg: "No se encontro una categoria relacionada con ese id",
+        });
+      } else {
+        makeQuery(
+          `UPDATE categories SET state = '0' WHERE Id_categories = '${id}'; `
+        )
+          .then(() => res.json("Categoria eliminada con exito"))
+          .catch((error) => res.status(500).json(error));
+      }
+    })
+    .catch((error) => res.status(500).json(error));
 };

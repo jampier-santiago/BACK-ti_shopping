@@ -67,9 +67,19 @@ export const updateProduct = (req = request, res = response) => {
  * Function for make a new product
  */
 export const makeProduct = (req = request, res = response) => {
-  const { name, description, price, images, category, store, brand } = req.body;
+  const { name, description, price, images } = req.body;
 
-  res.json({ name, description, price, images, category, store, brand });
+  const data = {
+    Name_product: name,
+    Description_product: description,
+    Price: price,
+    state: 1,
+    image: images,
+  };
+
+  makeQuery("INSERT INTO products SET ?", data)
+    .then(() => res.json("Elemento insertado con exitoo"))
+    .catch((error) => res.status(500).json(error));
 };
 
 /**

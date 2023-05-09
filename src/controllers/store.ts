@@ -88,7 +88,7 @@ export const postStore = (req: any, res = response) => {
 /**
  * Function for update a store
  */
-export const putStore = (req = request, res = response) => {
+export const putStore = (req: any, res = response) => {
   const { id } = req.params;
 
   const {
@@ -106,20 +106,44 @@ export const putStore = (req = request, res = response) => {
     accountBank,
   } = req.body;
 
-  res.json({
-    name,
-    address,
-    webPage,
-    facebook,
-    instagram,
-    phoneNumber,
-    email,
-    description,
-    logo,
-    mainColor,
-    keyWords,
-    accountBank,
+  const data: any = {
+    name_store: name,
+    Address: address,
+    business_description: description,
+    main_color: mainColor,
+    keyword: keyWords,
+    Email: email,
+    active_bank_account_number: accountBank,
+    Logo: logo,
+    Num_telephone: phoneNumber,
+    Instagram: instagram,
+    Facebook: facebook,
+    Page_web: webPage,
+    Id_sellers: req.userId,
+  };
+
+  let query = "";
+
+  Object.keys(data).forEach((brand) => {
+    if (data[brand]) {
+      query += `${brand} = '${data[brand]}', `;
+    }
   });
+
+  query = query.slice(0, -2) + query.slice(-1);
+
+  makeQuery(`select * from stores where state = '1' AND Id_stores = ${id}`)
+    .then((result: Array<StoreResponseEntity>) => {
+      if (result.length > 0) {
+        console.log(query);
+        makeQuery(`UPDATE stores SET ${query.trim()} WHERE Id_stores = ${id};`)
+          .then(() => res.json("Elemento actualizado con exito"))
+          .catch((error) => res.status(500).json(error));
+      } else {
+        return res.json(404).json("No existe un usuario con estos datos");
+      }
+    })
+    .catch((error) => res.status(500).json(error));
 };
 
 /**
