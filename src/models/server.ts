@@ -7,6 +7,7 @@ import routesStore from "../routes/store";
 import routesAuth from "../routes/auth";
 import routesProducts from "../routes/products";
 import routesCategories from "../routes/categories";
+import routesSales from "../routes/sales";
 
 // DB
 import { makePool } from "../db/config";
@@ -19,6 +20,7 @@ class Server {
   routeProducts: string = "/api/products";
   routeAuth: string = "/api/auth";
   routeCategories: string = "/api/categories";
+  routeSales: string = "/api/sales";
 
   constructor() {
     this.port = process.env.PORT || 3000;
@@ -49,6 +51,7 @@ class Server {
     this.app.use(this.routeAuth, routesAuth);
     this.app.use(this.routeProducts, routesProducts);
     this.app.use(this.routeCategories, routesCategories);
+    this.app.use(this.routeSales, routesSales);
   }
 
   listen() {
