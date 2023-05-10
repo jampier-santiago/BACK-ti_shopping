@@ -8,12 +8,15 @@ import {
   makeProduct,
   updateProduct,
   deleteProduct,
+  getProducts,
 } from "../controllers/products";
 
 // Middlewares
 import { validarCampos, validarJWT } from "../middlewares";
 
 const router = Router();
+
+router.get("/", getProducts);
 
 router.get("/:id", getProductById);
 

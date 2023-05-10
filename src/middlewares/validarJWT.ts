@@ -1,7 +1,7 @@
 import { response, request, json } from "express";
 import jwt, { Secret } from "jsonwebtoken";
 
-const validarJWT = (req = request, res = response, next: any) => {
+const validarJWT = (req: any, res = response, next: any) => {
   const token = req.header("x-token");
 
   if (!token) {
@@ -10,6 +10,8 @@ const validarJWT = (req = request, res = response, next: any) => {
 
   try {
     const data = jwt.verify(token, process.env.SECRET_KEY as Secret);
+
+    req.userId = (data as any).uid;
   } catch (error) {
     res.status(401).json({ msg: "Token no valido" });
   }

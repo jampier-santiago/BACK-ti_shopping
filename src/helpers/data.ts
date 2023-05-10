@@ -1,4 +1,11 @@
-import { StoreModel, Client, Seller, Store, Product } from "../data/models";
+import {
+  StoreModel,
+  Client,
+  Seller,
+  Store,
+  Product,
+  Category,
+} from "../data/models";
 
 export const stores: Array<StoreModel> = [
   {
@@ -89,4 +96,10 @@ export const products: Array<Product> = [
     name: "Mac",
     price: "20000",
   },
+];
+
+export const categories: Array<Category> = [
+  { id: "122", name: "Computadores" },
+  { id: "123", name: "Celulares" },
+  { id: "124", name: "Audifonos" },
 ];
