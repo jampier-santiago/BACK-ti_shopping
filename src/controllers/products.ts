@@ -11,10 +11,14 @@ import { ProductResponseEntity } from "data/products.entity";
  * Function for find a product by id
  */
 export const getProducts = (req = request, res = response) => {
-  makeQuery("select * from products where state = '1'")
+  const { idStore } = req.params;
+
+  makeQuery(
+    `select * from products where state = '1' AND id_store = ${idStore}`
+  )
     .then((results: Array<ProductResponseEntity>) => {
       const data = results.map((result) => {
-        const { state, ...rest } = result;
+        const { state, id_store, ...rest } = result;
         return rest;
       });
 
@@ -33,7 +37,7 @@ export const getProductById = (req = request, res = response) => {
     .then((results: Array<ProductResponseEntity>) => {
       if (products.length > 0) {
         const data = results.map((result) => {
-          const { state, ...rest } = result;
+          const { state, id_store, ...rest } = result;
           return rest;
         });
 
@@ -92,7 +96,7 @@ export const updateProduct = (req = request, res = response) => {
  * Function for make a new product
  */
 export const makeProduct = (req = request, res = response) => {
-  const { name, description, price, images } = req.body;
+  const { name, description, price, images, id_store } = req.body;
 
   const data = {
     Name_product: name,
@@ -100,6 +104,7 @@ export const makeProduct = (req = request, res = response) => {
     Price: price,
     state: 1,
     image: images,
+    id_store,
   };
 
   makeQuery("INSERT INTO products SET ?", data)

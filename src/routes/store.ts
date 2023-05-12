@@ -9,6 +9,7 @@ import {
   postStore,
   putStore,
   deleteStore,
+  getStoresAdmin,
 } from "../controllers/store";
 
 // Middlewares
@@ -17,6 +18,8 @@ import { validarCampos, validarJWT } from "../middlewares";
 const router = Router();
 
 router.get("/", getStores);
+
+router.get("/admin/all-stores", getStoresAdmin);
 
 router.get("/:id", getStoreById);
 

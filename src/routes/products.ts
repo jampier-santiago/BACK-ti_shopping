@@ -16,7 +16,7 @@ import { validarCampos, validarJWT } from "../middlewares";
 
 const router = Router();
 
-router.get("/", getProducts);
+router.get("/:idStore", getProducts);
 
 router.get("/:id", getProductById);
 

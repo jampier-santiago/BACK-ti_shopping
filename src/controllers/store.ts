@@ -26,6 +26,22 @@ export const getStores = (req = request, res = response) => {
 };
 
 /**
+ * Function for get all stores
+ */
+export const getStoresAdmin = (req = request, res = response) => {
+  makeQuery("select * from stores")
+    .then((results: Array<StoreResponseEntity>) => {
+      const data = results.map((result) => {
+        const { state, ...rest } = result;
+        return rest;
+      });
+
+      res.json(data);
+    })
+    .catch((error) => res.status(500).json(error));
+};
+
+/**
  * Function for find a store
  */
 export const getStoreById = (req = request, res = response) => {
