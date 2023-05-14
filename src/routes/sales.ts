@@ -6,7 +6,7 @@ import { check } from "express-validator";
 import { getAllSales, makeSale } from "../controllers/sales";
 
 // Middlewares
-import { validarCampos, validarJWT, validarCamposVenta } from "../middlewares";
+import { validarCampos, validarJWT } from "../middlewares";
 
 const router = Router();
 
@@ -16,9 +16,8 @@ router.post(
   "/",
   [
     validarJWT,
-    check("products", "Este campo es obligtorio").notEmpty(),
-    check("idStore", "Este campo es obligatorio").notEmpty(),
-    validarCamposVenta,
+    check("idStore", "Este campo es obligtorio").notEmpty(),
+    check("idPorduct", "Este campo es obligatorio").notEmpty(),
     validarCampos,
   ],
   makeSale

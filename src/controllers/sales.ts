@@ -22,18 +22,33 @@ export const getAllSales = (req: any, res = response) => {
 };
 
 export const makeSale = (req: any, res = response) => {
-  const { idStore, products } = req.body;
+  const { idStore, idPorduct, amount } = req.body;
   const userId = req.userId;
 
   const date = new Date();
 
-  makeQuery(
-    `INSERT INTO sales (Date_sales, Hour_sales) VALUES ('${date.getDate()}/${date.getMonth()}/${date.getFullYear()}', '${
-      date.getHours
-    }:${date.getMinutes()}')`
-  )
+  const data = {
+    Date_sales: `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`,
+    Hour_sales: `${date.getHours()}:${date.getMinutes()}`,
+    id_users: userId,
+  };
+
+  makeQuery(`INSERT INTO sales SET ?`, data)
     .then((result) => {
-      return res.json(result);
+      const idSale = result.insertId;
+
+      const dataTbl = {
+        id_sale: idSale,
+        id_product: idPorduct,
+        id_store: idStore,
+        amount,
+      };
+
+      makeQuery("INSERT INTO sales_products_stores SET ?", dataTbl)
+        .then((result) => {
+          return res.json("Venta terminada con exito");
+        })
+        .catch((error) => res.status(500).json(error));
     })
     .catch((error) => res.status(500).json(error));
 };
