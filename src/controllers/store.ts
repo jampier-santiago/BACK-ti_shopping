@@ -25,6 +25,22 @@ export const getStores = (req = request, res = response) => {
     .catch((error) => res.status(500).json(error));
 };
 
+export const getStoreByUser = (req: any, res = response) => {
+  const id = req.userId;
+
+  makeQuery(
+    `select Id_stores, name_store, Address, Page_web, Facebook, Instagram, Num_telephone, Email, business_description, logo, main_color, keyword, active_bank_account_number from stores where state = '1' AND Id_sellers = ${id}`
+  )
+    .then((result) => {
+      if (result.length > 0) {
+        return res.json(result[0]);
+      }
+
+      return res.status(404).json("No se encontraron datos con ese id");
+    })
+    .catch((error) => res.status(500).json(error));
+};
+
 /**
  * Function for get all stores
  */

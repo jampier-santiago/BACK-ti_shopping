@@ -34,7 +34,7 @@ router.post(
     check("price", "El precio es obligatorio").notEmpty(),
     check("category", "No es un id valido para una categoria").notEmpty(),
     check(
-      "store",
+      "id_store",
       "El id de la tienda a la que pertenece el producto es obligatorio"
     ).notEmpty(),
     check("brand", "La marca del producto es obligatoria").notEmpty(),

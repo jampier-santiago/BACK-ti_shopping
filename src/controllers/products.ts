@@ -104,7 +104,7 @@ export const makeProduct = (req = request, res = response) => {
     Price: price,
     state: 1,
     image: images,
-    id_store,
+    id_store: parseInt(id_store),
   };
 
   makeQuery("INSERT INTO products SET ?", data)

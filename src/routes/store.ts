@@ -10,6 +10,7 @@ import {
   putStore,
   deleteStore,
   getStoresAdmin,
+  getStoreByUser,
 } from "../controllers/store";
 
 // Middlewares
@@ -22,6 +23,8 @@ router.get("/", getStores);
 router.get("/admin/all-stores", getStoresAdmin);
 
 router.get("/:id", getStoreById);
+
+router.get("/user/filter", [validarJWT, validarCampos], getStoreByUser);
 
 router.post(
   "/new-store",
