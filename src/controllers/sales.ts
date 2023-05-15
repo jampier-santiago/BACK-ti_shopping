@@ -45,7 +45,7 @@ export const makeSale = (req: any, res = response) => {
       };
 
       makeQuery("INSERT INTO sales_products_stores SET ?", dataTbl)
-        .then((result) => {
+        .then(() => {
           return res.json("Venta terminada con exito");
         })
         .catch((error) => res.status(500).json(error));

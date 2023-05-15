@@ -132,3 +132,23 @@ export const deleteProduct = (req = request, res = response) => {
       return res.status(500).json(error);
     });
 };
+
+/**
+ * Function for get all products by store
+ */
+export const getProductByStore = (req = request, res = response) => {
+  const { id } = req.params;
+
+  makeQuery(
+    `select * from stores as stor join products prod on stor.Id_stores = prod.id_store where stor.Id_sellers = ${id}`
+  )
+    .then((results: Array<ProductResponseEntity>) => {
+      const data = results.map((result) => {
+        const { state, id_store, ...rest } = result;
+        return rest;
+      });
+
+      res.json(data);
+    })
+    .catch((error) => res.status(500).json(error));
+};

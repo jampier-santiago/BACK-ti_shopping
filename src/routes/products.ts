@@ -9,6 +9,7 @@ import {
   updateProduct,
   deleteProduct,
   getProducts,
+  getProductByStore,
 } from "../controllers/products";
 
 // Middlewares
@@ -19,6 +20,7 @@ const router = Router();
 router.get("/:idStore", getProducts);
 
 router.get("/:id", getProductById);
+router.get("/store/:id", getProductByStore);
 
 router.post(
   "/new-product",
