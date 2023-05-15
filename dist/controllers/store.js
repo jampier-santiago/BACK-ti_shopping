@@ -11,7 +11,7 @@ var __rest = (this && this.__rest) || function (s, e) {
     return t;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteStore = exports.putStore = exports.postStore = exports.getStoreById = exports.getStores = void 0;
+exports.deleteStore = exports.putStore = exports.postStore = exports.getStoreById = exports.getStoresAdmin = exports.getStores = void 0;
 // Packages
 const express_1 = require("express");
 // Helpers
@@ -32,6 +32,21 @@ const getStores = (req = express_1.request, res = express_1.response) => {
         .catch((error) => res.status(500).json(error));
 };
 exports.getStores = getStores;
+/**
+ * Function for get all stores
+ */
+const getStoresAdmin = (req = express_1.request, res = express_1.response) => {
+    (0, config_1.makeQuery)("select * from stores")
+        .then((results) => {
+        const data = results.map((result) => {
+            const { state } = result, rest = __rest(result, ["state"]);
+            return rest;
+        });
+        res.json(data);
+    })
+        .catch((error) => res.status(500).json(error));
+};
+exports.getStoresAdmin = getStoresAdmin;
 /**
  * Function for find a store
  */

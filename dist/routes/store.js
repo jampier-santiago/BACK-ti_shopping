@@ -9,6 +9,7 @@ const store_1 = require("../controllers/store");
 const middlewares_1 = require("../middlewares");
 const router = (0, express_1.Router)();
 router.get("/", store_1.getStores);
+router.get("/admin/all-stores", store_1.getStoresAdmin);
 router.get("/:id", store_1.getStoreById);
 router.post("/new-store", [
     middlewares_1.validarJWT,
