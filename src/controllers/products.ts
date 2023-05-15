@@ -140,7 +140,7 @@ export const getProductByStore = (req = request, res = response) => {
   const { id } = req.params;
 
   makeQuery(
-    `select * from stores as stor join products prod on stor.Id_stores = prod.id_store where stor.Id_sellers = ${id}`
+    `select Id_product, Name_product, Description_product, Price, image from stores as stor join products prod on stor.Id_stores = prod.id_store where stor.Id_sellers = ${id}`
   )
     .then((results: Array<ProductResponseEntity>) => {
       const data = results.map((result) => {
