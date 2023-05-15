@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sellers = exports.clients = exports.storesComplete = exports.stores = void 0;
+exports.categories = exports.products = exports.sellers = exports.clients = exports.storesComplete = exports.stores = void 0;
 exports.stores = [
     {
         id: "1",
@@ -68,5 +68,28 @@ exports.sellers = [
         password: "$2a$10$wPVgIwfUmZNOqvnAOOu3aunV8xWxaWfM408gdLN6MguKidGniFhpu",
         dateOfMakeAccount: new Date(),
     },
+];
+exports.products = [
+    {
+        brand: "Apple",
+        category: "Celulares",
+        description: "LADASIDNAS sandasij dasj as das dasj das ",
+        id: "1",
+        name: "Iphone",
+        price: "2000",
+    },
+    {
+        brand: "Apple",
+        category: "Computadores",
+        description: "LADASIDNAS sandasij dasj as das dasj das ",
+        id: "2",
+        name: "Mac",
+        price: "20000",
+    },
+];
+exports.categories = [
+    { id: "122", name: "Computadores" },
+    { id: "123", name: "Celulares" },
+    { id: "124", name: "Audifonos" },
 ];
 //# sourceMappingURL=data.js.map

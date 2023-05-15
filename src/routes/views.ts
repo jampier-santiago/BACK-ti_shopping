@@ -2,10 +2,10 @@
 import { Router } from "express";
 
 // Controllers
-import { getViewsProducts } from "../controllers/views";
+import { getViewsCategories } from "../controllers/views";
 
 const router = Router();
 
-router.get("/", getViewsProducts);
+router.get("/", getViewsCategories);
 
 export default router;
