@@ -22,7 +22,7 @@ export const getAllSales = (req: any, res = response) => {
 };
 
 export const makeSale = (req: any, res = response) => {
-  const { idStore, idPorduct, amount } = req.body;
+  const { idStore, products, amount } = req.body;
   const userId = req.userId;
 
   const date = new Date();
@@ -37,18 +37,20 @@ export const makeSale = (req: any, res = response) => {
     .then((result) => {
       const idSale = result.insertId;
 
-      const dataTbl = {
-        id_sale: idSale,
-        id_product: idPorduct,
-        id_store: idStore,
-        amount,
-      };
+      products.forEach((product: string) => {
+        const dataTbl = {
+          id_sale: idSale,
+          id_product: product,
+          id_store: idStore,
+          amount,
+        };
 
-      makeQuery("INSERT INTO sales_products_stores SET ?", dataTbl)
-        .then(() => {
-          return res.json("Venta terminada con exito");
-        })
-        .catch((error) => res.status(500).json(error));
+        makeQuery("INSERT INTO sales_products_stores SET ?", dataTbl)
+          .then(() => {
+            return res.json("Venta terminada con exito");
+          })
+          .catch((error) => res.status(500).json(error));
+      });
     })
     .catch((error) => res.status(500).json(error));
 };
