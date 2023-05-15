@@ -5,4 +5,5 @@ export interface ProductResponseEntity {
   Price: string | number;
   state: string;
   image: string;
+  id_store: string;
 }
