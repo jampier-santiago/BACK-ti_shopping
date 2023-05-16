@@ -10,12 +10,15 @@ import {
   deleteProduct,
   getProducts,
   getProductByStore,
+  getAllProducts,
 } from "../controllers/products";
 
 // Middlewares
 import { validarCampos, validarJWT } from "../middlewares";
 
 const router = Router();
+
+router.get("/", getAllProducts);
 
 router.get("/store/:idStore", getProducts);
 

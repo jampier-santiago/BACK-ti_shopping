@@ -13,7 +13,7 @@ const validarJWT = (req: any, res = response, next: any) => {
 
     req.userId = (data as any).uid;
   } catch (error) {
-    res.status(401).json({ msg: "Token no valido" });
+    return res.status(401).json({ msg: "Token no valido" });
   }
 
   next();
