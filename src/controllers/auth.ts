@@ -116,7 +116,7 @@ export const newUser = async (req = request, res = response) => {
     credit_card_expiration_date,
     rol: "CLIENT",
   })
-    .then(() => response.status(200).json("Elemento insertado con exito"))
+    .then(() => res.status(200).json("Elemento insertado con exito"))
     .catch((error) => res.status(500).json(error));
 };
 
