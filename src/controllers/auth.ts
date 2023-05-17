@@ -116,8 +116,12 @@ export const newUser = async (req = request, res = response) => {
     credit_card_expiration_date,
     rol: "CLIENT",
   })
-    .then(() => res.status(200).json("Elemento insertado con exito"))
-    .catch((error) => res.status(500).json(error));
+    .then(() => {
+      return res.status(200).json("Elemento insertado con exito");
+    })
+    .catch((error) => {
+      return res.status(500).json(error);
+    });
 };
 
 /**
@@ -131,7 +135,9 @@ export const deleteUser = (req = request, res = response) => {
       if (results.length > 0) {
         makeQuery(`UPDATE people SET state = '0' WHERE Id_people = '${id}'; `)
           .then(() => res.json("Elemento eliminado con exito"))
-          .catch((error) => res.status(500).json(error));
+          .catch((error) => {
+            return res.status(500).json(error);
+          });
       } else {
         return res.json(404).json("No existe un usuario con estos datos");
       }
