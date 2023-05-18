@@ -56,7 +56,7 @@ export const makeSale = (req: any, res = response) => {
   const date = new Date();
 
   const data = {
-    Date_sales: `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`,
+    Date_sales: `${date.getMonth()}/${date.getDate()}/${date.getFullYear()}`,
     Hour_sales: `${date.getHours()}:${date.getMinutes()}`,
     id_users: userId,
   };
