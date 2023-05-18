@@ -18,7 +18,35 @@ export const getAllSales = (req: any, res = response) => {
 
       return res.json(data);
     })
-    .catch((error) => res.status(500).json(error));
+    .catch((error) => {
+      return res.status(500).json(error);
+    });
+};
+
+export const getDataForGraph = (req: any, res = response) => {
+  const { idStore } = req.params;
+
+  makeQuery(
+    `SELECT prod.Name_product FROM sales_products_stores AS tbl_paso JOIN products AS prod ON tbl_paso.id_product = prod.Id_product WHERE tbl_paso.id_store = '${idStore}'`
+  )
+    .then((result) => {
+      let data = [...result.map((resp: any) => resp.Name_product)];
+
+      const dataForGraph: any = {};
+
+      data.forEach((product: string) => {
+        if (!dataForGraph[product]) {
+          dataForGraph[product] = 0;
+        }
+
+        dataForGraph[product] += 1;
+      });
+
+      return res.json(dataForGraph);
+    })
+    .catch((error) => {
+      return res.status(500).json(error);
+    });
 };
 
 export const makeSale = (req: any, res = response) => {
@@ -37,7 +65,7 @@ export const makeSale = (req: any, res = response) => {
     .then((result) => {
       const idSale = result.insertId;
 
-      products.forEach((product: string) => {
+      products.forEach((product: string, index: number) => {
         const dataTbl = {
           id_sale: idSale,
           id_product: product,
@@ -45,12 +73,17 @@ export const makeSale = (req: any, res = response) => {
           amount,
         };
 
-        makeQuery("INSERT INTO sales_products_stores SET ?", dataTbl)
-          .then(() => {
-            return res.json("Venta terminada con exito");
-          })
-          .catch((error) => res.status(500).json(error));
+        makeQuery("INSERT INTO sales_products_stores SET ?", dataTbl).catch(
+          (error) => {
+            return res.status(500).json(error);
+          }
+        );
+
+        if (index === products.length - 1)
+          return res.json("Productos insertados con exito");
       });
     })
-    .catch((error) => res.status(500).json(error));
+    .catch((error) => {
+      return res.status(500).json(error);
+    });
 };
